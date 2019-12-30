@@ -138,7 +138,7 @@ export default class Form extends Component {
 
                             </div>
 
-                            <input type="submit" className="btn btn-primary offset-4" value="Register" />
+                            <input type="submit" className="btn btn-primary offset-4" value="login" />
 
                         </form>
                     </div>

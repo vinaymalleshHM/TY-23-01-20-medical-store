@@ -82,11 +82,11 @@ export default function Navbar() {
 
                                                     </li>
                                                     <li className="nav-item active">
-                                                        <Link className="navbar-brand" ><i class="fa fa-heart" aria-hidden="true"></i>mywhishlist</Link>
+                                                        <Link className="nav-link" ><i class="fa fa-heart" aria-hidden="true"></i>mywhishlist</Link>
 
                                                     </li>
                                                     <li className="nav-item active">
-                                                        <Link className="navbar-brand" ><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>mycart</Link>
+                                                        <Link className="nav-link" ><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>mycart</Link>
 
                                                     </li>
                                                     <li className="nav-item active">
