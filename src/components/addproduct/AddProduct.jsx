@@ -1,158 +1,225 @@
-import React, { useState, Component } from 'react'
+import React, { useState, useEffect } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import clsx from 'clsx';
+import Radio from '@material-ui/core/Radio';
 import Axios from 'axios';
 
-export default class AddProduct extends Component {
+function Copyright(props) {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="https://material-ui.com/">
+                Your Website
+      </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
 
+const useStyles = makeStyles(theme => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+    root: {
+        '&:hover': {
+            backgroundColor: 'transparent',
+        },
+    },
+    icon: {
+        borderRadius: '50%',
+        width: 16,
+        height: 16,
+        boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
+        backgroundColor: '#f5f8fa',
+        backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+        '$root.Mui-focusVisible &': {
+            outline: '2px auto rgba(19,124,189,.6)',
+            outlineOffset: 2,
+        },
+        'input:hover ~ &': {
+            backgroundColor: '#ebf1f5',
+        },
+        'input:disabled ~ &': {
+            boxShadow: 'none',
+            background: 'rgba(206,217,224,.5)',
+        },
+    },
+    checkedIcon: {
+        backgroundColor: '#137cbd',
+        backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+        '&:before': {
+            display: 'block',
+            width: 16,
+            height: 16,
+            backgroundImage: 'radial-gradient(#fff,#fff 28%,transparent 32%)',
+            content: '""',
+        },
+        'input:hover ~ &': {
+            backgroundColor: '#106ba3',
+        },
+    },
+    button: {
+        display: 'block',
+        marginTop: theme.spacing(2),
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+}));
 
-    state = {
-        productName: '',
-        brand: '',
+export default function SignUp(props) {
+    const userData = {
+        pName: '',
+        company: '',
         price: '',
-        noPro: '',
+        qty: '',
         proImg: '',
-        productNameErr: false,
-        brandErr: false,
-        priceErr: false,
-        noProErr: false,
-        imgErr: false
+        description: '',
+        medicineType: ''
     }
+    const [pNameErr, setPNameErr] = useState(false)
+    const [companyErr, setCompanyErr] = useState(false)
+    const [priceErr, setPriceErr] = useState(false)
+    const [qtyErr, setQtyErr] = useState(false)
+    const [proImgErr, setProImgErr] = useState(false)
+    const [mediErr, setMedediErr] = useState(false)
+    const [descriptionErr, setDescriptionErr] = useState(false)
+    const [open, setOpen] = React.useState(false);
 
-    handleChange = (e) => {
-        this.setState({
+    const [val, setval] = useState(userData)
+
+
+    const handleChange = (e) => {
+        setval({
+            ...val,
             [e.target.name]: e.target.value
         })
     }
+    const handleClose = () => {
+        setOpen(false);
+    };
 
-    validForm = async (event) => {
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleSubmit = (event) => {
         event.preventDefault()
-
-        const { productName, brand, price, noPro, proImg } = this.state
-        if (productName.trim().match(/^[a-zA-Z ]*$/) && productName !== '') {
-            await this.setState({
-                productNameErr: false
-
-            })
-            console.log(this.state.productNameErr)
-        }
-        else {
-
-            await this.setState({
-                productNameErr: true
-
-            })
-            console.log(this.state.productNameErr)
-
+        // debugger
+        validForm();
+        if (val.pName !== '' && val.company !== '' && val.price !== '' && val.qty !== '' && val.proImg !== '' && val.description !== '') {
+            validForm();
+            if (fullControl()) {
+                saveData()
+            }
         }
 
-        if (brand.trim().match(/^[a-zA-Z ]*$/) && productName !== '') {
-            await this.setState({
-                brandErr: false
-
-            })
-            console.log(this.state.brandErr)
-
-        }
-        else {
-
-            await this.setState({
-                brandErr: true
-
-            })
-            console.log(this.state.brandErr)
-        }
-        if (price.trim().match(/^[0-9]/)) {
-            await this.setState({
-                priceErr: false
-
-            })
-            console.log(this.state.priceErr)
-        }
-        else {
-
-            await this.setState({
-                priceErr: true
-
-            })
-
-            console.log(this.state.showErrMobile)
-
-        }
-
-        if (noPro.match(/^[0-9]/) && noPro !== "") {
-            await this.setState({
-                noProErr: false
-
-            })
-
-            console.log(this.state.noProErr)
-
-        }
-        else {
-
-            await this.setState({
-                noProErr: true
-
-            })
-
-            console.log(this.state.noProErr)
-
-        }
-        if (proImg !== '') {
-            await this.setState({
-                imgErr: false
-
-            })
-            console.log(this.state.imgErr)
-        }
-        else {
-
-            await this.setState({
-                imgErr: true
-
-            })
-
-            console.log(this.state.showErrDdrop)
-
-        }
-        this.sendCorrect()
     }
+    const validForm = () => {
 
-    sendCorrect = () => {
-        if (this.state.productNameErr !== true && this.state.brandErr !== true && this.state.priceErr !== true && this.state.noProErr !== true && this.state.imgErr !== true) {
+        if (val.pName.trim().match(/^[a-zA-Z ]*$/) && val.pName !== '') {
+            setPNameErr(false)
+        }
+        else {
+            setPNameErr(true)
+        }
+        if (val.company.trim().match(/^[a-zA-Z ]*$/) && val.company !== '') {
+            setCompanyErr(false)
+        }
+        else {
+            setCompanyErr(true)
+        }
+        if (val.medicineType.trim() && val.medicineType !== '') {
+            setMedediErr(false)
+        }
+        else {
+            setMedediErr(true)
+        }
+        if (val.description.trim() && val.description !== '') {
+            setDescriptionErr(false)
+        }
+        else {
+            setDescriptionErr(true)
+        }
 
-            console.log('hj', this.state.productNameErr)
-            console.log('hj', this.state.brandErr)
-            console.log('hj', this.state.priceErr)
-            console.log('hj', this.state.noProErr)
-            console.log('hj', this.state.imgErr)
+        if (val.price.trim().match(/^[0-9]/)) {
+            setPriceErr(false)
+        }
+        else {
+            setPriceErr(true)
+        }
+        if (val.qty.trim().match(/^[0-9]/)) {
+            setQtyErr(false)
+        }
+        else {
+            setQtyErr(true)
+        }
 
-            this.saveData()
+        if (val.proImg !== "") {
+            setProImgErr(false)
+        }
+        else {
+            setProImgErr(true)
         }
     }
 
-    saveData = async () => {
-        //event.preventDefault()
-        const formData = this.state
+    const fullControl = () => {
+        // validForm();
+        if (pNameErr !== true && companyErr !== true && priceErr !== true && qtyErr !== true && proImgErr !== true && descriptionErr !== true) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    const saveData = () => {
+        const formData = val
 
-        const url = 'https://react-myshop-project.firebaseio.com/addproduct.json'
-
+        const url = 'https://react-medi.firebaseio.com/addproducts.json'
         Axios.post(url, formData).then((response) => {
             console.log("Success ", response)
             if (response.status === 200) {
 
-                this.setState({
-                    productName: '',
-                    brand: '',
+                setval({
+                    pName: '',
+                    company: '',
                     price: '',
-                    noPro: '',
+                    qty: '',
                     proImg: '',
-                    productNameErr: false,
-                    brandErr: false,
-                    priceErr: false,
-                    noProErr: false,
-                    imgErr: false
+                    description: '',
+                    medicineType: ''
                 })
-                // this.props.history.push('/login')
             }
         }).catch((err) => {
             console.log("Error ", err)
@@ -161,77 +228,154 @@ export default class AddProduct extends Component {
 
     }
 
-    render() {
+
+    const classes = useStyles();
+    function StyledRadio(props) {
+        const classes = useStyles();
+
         return (
-            <div className="col-md-6 col-sm-6 col-6 offset-3 card card-body mt-5">
-                <form onSubmit={this.validForm}>
-                    <legend className='text-center'><b>Add Product</b></legend><br></br>
-                    <div class="form-group row">
-                        <label className="col-sm-3 col-form-label">Product Name</label>
-                        <div class="col-sm-8">
-                            <input name="productName"
-                                className="form-control" type="text"
-                                value={this.state.productName}
-                                placeholder="Enter Product"
-                                onChange={this.handleChange} />
-                            {this.state.productNameErr ? <p style={{ color: 'red', fontSize: '12px' }}>Enter only Characters</p> : null}
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label className="col-sm-3 col-form-label">Brand</label>
-                        <div class="col-sm-8">
-                            <input name="brand"
-                                className="form-control" type="text"
-                                value={this.state.brand}
-                                onChange={this.handleChange}
-                                placeholder="Enter Brand" />
-                            {this.state.brandErr ? <p style={{ color: 'red', fontSize: '12px' }}>Allowed Only Letters</p> : null}
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label className="col-sm-3 col-form-label">Price</label>
-                        <div class="col-sm-8">
-                            <input name="price"
-                                className="form-control" type="text"
-                                placeholder="Enetr Price"
-
-                                value={this.state.price}
-                                onChange={this.handleChange} />
-                            {this.state.priceErr ? <p style={{ color: 'red', fontSize: '12px' }}>Only numbers</p> : null}
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label className="col-sm-3 col-form-label">No of Quantity</label>
-                        <div class="col-sm-8" >
-                            <input type="text" name="noPro"
-                                className="form-control"
-
-                                placeholder="Number of quantity"
-                                value={this.state.noPro}
-                                onChange={this.handleChange} />
-                            {this.state.noProErr ? <p style={{ color: 'red', fontSize: '12px' }}>Enter numbers only</p> : null}
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label className="col-sm-3 col-form-label">Image Path</label>
-                        <div class="col-sm-8">
-                            <input name="proImg"
-                                className="form-control" type="text"
-                                placeholder="Give image Path"
-
-                                onChange={this.handleChange}
-                                value={this.state.proImg} />
-                            {this.state.imgErr ? <p style={{ color: 'red', fontSize: '12px' }}>Enter proper Image Path</p> : null}
-                        </div>
-                    </div>
-
-                    <button className="btn btn-outline-info col-sm-6 col-6 col-md-6 offset-3 mt-3" id="login" type="submit">Add Product</button>
-                </form>
-            </div>
-        )
+            <Radio
+                className={classes.root}
+                disableRipple
+                color="default"
+                checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+                icon={<span className={classes.icon} />}
+                {...props}
+            />
+        );
     }
+
+    return (
+        <>
+            <CssBaseline />
+            <div className={classes.paper}>
+                <div className="card card-body col-md-6 mt-3">
+                
+                <Typography component="h1" variant="h5">
+                    <h1 className="text-center">Add Product</h1>
+        </Typography>
+        <Grid md={12}>
+                <form className={classes.form} onSubmit={handleSubmit} noValidate>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                autoComplete="fname"
+                                variant="outlined"
+                                required
+                                fullWidth
+                                label="Product Name"
+                                name="pName"
+                                value={val.pName}
+                                onChange={handleChange}
+                                autoFocus
+                            />
+                            {pNameErr ? <p style={{ color: 'red', fontSize: '12px' }}>product name Should be Characters</p> : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                label="company Name"
+                                name="company"
+                                value={val.company}
+                                onChange={(e) => handleChange(e)}
+                                autoComplete="company"
+                            />
+                            {companyErr ? <p style={{ color: 'red', fontSize: '12px' }}>companyname Should be Characters</p> : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                label="Image Address"
+                                name="proImg"
+                                value={val.proImg}
+                                onChange={(e) => handleChange(e)}
+                                autoComplete="company"
+                            />
+                            {companyErr ? <p style={{ color: 'red', fontSize: '12px' }}> enter proper image address</p> : null}
+                        </Grid>
+                                 
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                label="price"
+                                name="price"
+                                value={val.price}
+                                onChange={(e) => handleChange(e)}
+                                autoComplete="price"
+                            />
+                            {priceErr ? <p style={{ color: 'red', fontSize: '12px' }}>enter no only</p> : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                label="Quantity"
+                                name="qty"
+                                value={val.qty}
+                                onChange={(e) => handleChange(e)}
+                                autoComplete="Quantity"
+                            />
+                            {qtyErr ? <p style={{ color: 'red', fontSize: '12px' }}>enter no only</p> : null}
+                        </Grid> 
+                        <FormControl className={classes.formControl}>
+                            <InputLabel id="demo-controlled-open-select-label">medicine type</InputLabel>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                open={open}
+                                onClose={handleClose}
+                                onOpen={handleOpen}
+                                value={val.medicineType}
+                                name="medicineType"
+                                onChange={(e) => handleChange(e)}>
+                                <MenuItem value="tanic">tanic</MenuItem>
+                                <MenuItem value="tablet">tablet</MenuItem>
+                                <MenuItem value="powder">powder</MenuItem>
+                            </Select>
+                                {mediErr ? <p style={{ color: 'red', fontSize: '12px' }}>enter type of medicine</p> : null}
+                        </FormControl>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                label="description"
+                                name="description"
+                                value={val.description}
+                                onChange={(e) => handleChange(e)}
+                                autoComplete="password"
+                            />
+                            {descriptionErr ? <p style={{ color: 'red', fontSize: '12px' }}>desc can't empty</p> : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                label="I Accept the Conditions"
+                            />
+                        </Grid>
+                    </Grid>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}>
+                        add product
+                    </Button>
+                </form>
+                </Grid>
+                </div>
+            </div>
+            <Box mt={5}>
+                <Copyright />
+            </Box>
+        </>
+    );
 }

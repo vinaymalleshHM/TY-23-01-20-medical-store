@@ -1,36 +1,29 @@
 import React, { useState, useContext } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/navbar/Navbar';
 import UserContext, { UserProvider } from './context/userContext';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
 
-  const context = useContext(UserContext)
   const userDetail = {
     login: false,
     setLogin : val =>{
       handleChange(val)
     },
-    navbar:false,
-    setNavbar: val => {
-      handleMode(val)
-  },
-  findUser:'',
-  setUser : val =>{
-    handleUser(val)
-  }
-
+    input:null,
+    setInput: val =>{
+      handleInput(val)
+    }
 }
 const [data, setData] = useState(userDetail)
 
-const handleUser = (val)=>{
+const handleInput =(e)=>{
   setData({
     ...data,
-    findUser:val
+    input:e
   })
 }
-
 const handleChange = (val) => {
 
   setData({
@@ -38,19 +31,23 @@ const handleChange = (val) => {
       login: val
   })
 }
-const handleMode = (val) => {
-  setData({
-      ...data,
-      mode: val
-  })
-}
+
+// productName: '',
+// company: '',
+// price: '',
+// qty: '',
+// proImg: '',
+// description:'',
 
 
   return (
     <>
+    <Router>
     <UserProvider value={data}>
       <Navbar/>
       </UserProvider>
+
+    </Router>
     </>
   );
 }
