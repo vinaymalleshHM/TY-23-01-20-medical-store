@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
 import Search from '../input/Search'
+import PrimarySearchAppBar from '../input/Searching'
 
 export default function Home(props) {
   const [receiveItem, setItems] = useState({ all: [] })
@@ -96,7 +97,8 @@ export default function Home(props) {
 
   return (
     <>
-      <Search data={handleChange} />
+      {/* <Search data={handleChange} /> */}
+      <PrimarySearchAppBar data={handleChange} />
       <div className="container-fluid">
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

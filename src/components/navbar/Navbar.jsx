@@ -3,7 +3,7 @@ import Form from '../form/Form'
 import UserContext, { UserConsumer } from '../../context/userContext';
 import { Link, BrowserRouter as Router, Route } from 'react-router-dom';
 import CreateAccount from '../create-account/CreateAccount';
-import AddProduct from '../addproduct/AddProduct';
+import AddProducts from '../addproduct/AddProducts';
 import ShowProduct from '../showproduct/ShowProduct';
 import AddCart from '../addcart/AddCart';
 import MyAccount from '../myaccount/MyAccount';
@@ -16,6 +16,7 @@ import ProductTable from '../producttable/ProductTable';
 import RegisterForm from '../register/RegisterForm';
 import UsersTables from '../users-table/UsersTables';
 import SignUp from '../create-account/SignUp';
+import LoginForm from '../form/LoginForm';
 
 
 
@@ -153,9 +154,9 @@ export default function Navbar() {
 
             <Route path='/createaccount' component={SignUp} />
             <Route exact path='/showproduct' component={ShowProduct} />
-            {login ? null : <Route path='/login' component={Form} />}
+            {login ? null : <Route path='/login' component={LoginForm} />}
 
-            {login ? <><Route path='/addproduct' component={AddProduct} />
+            {login ? <><Route path='/addproduct' component={AddProducts} />
                 <Route path='/mycart' component={AddCart} />
                 <Route path='/place' component={PlaceOrder} />
                 <Route path='/myaccount' component={MyAccount} />

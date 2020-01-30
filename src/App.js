@@ -3,6 +3,8 @@ import './App.css';
 import Navbar from './components/navbar/Navbar';
 import UserContext, { UserProvider } from './context/userContext';
 import { BrowserRouter as Router } from 'react-router-dom';
+import ButtonAppBar from './components/navbar/AppBar';
+// import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 function App() {
 
@@ -44,9 +46,9 @@ const handleChange = (val) => {
     <>
     <Router>
     <UserProvider value={data}>
-      <Navbar/>
+      {/* <Navbar/> */}
+      <ButtonAppBar/>
       </UserProvider>
-
     </Router>
     </>
   );
