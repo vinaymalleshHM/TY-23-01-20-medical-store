@@ -128,7 +128,7 @@ export default function AddProduct(props) {
         qty: null,
         proImg: null,
         description: null,
-        medicineType: null,
+        medicineType: "",
         formErrors: {
             pName: "",
             company: "",
@@ -148,6 +148,14 @@ export default function AddProduct(props) {
 
         if (formValid(stateval)) {
             saveData()
+            console.log("ok")
+            // console.log(stateval.pName)
+            // console.log(stateval.company)
+            // console.log(stateval.proImg)
+            // console.log(stateval.medicineType)
+            // console.log(stateval.description)
+            // console.log(stateval.price)
+            // console.log(stateval.qty)
         } else {
             console.log("can't submit");
             if (stateval.pName !== null && stateval.company !== null && stateval.price !== null &&
@@ -195,20 +203,40 @@ export default function AddProduct(props) {
             price: stateval.price,
             proImg: stateval.proImg,
             medicineType: stateval.medicineType,
+            qty: stateval.qty
         }
+
+        console.log(stateval.pName)
+        console.log(stateval.company)
+        console.log(stateval.proImg)
+        console.log(stateval.medicineType)
+        console.log(stateval.description)
+        console.log(stateval.price)
+        console.log(stateval.qty)
+        console.log("form ",formData)
 
         const url = 'https://react-medi.firebaseio.com/addproducts.json'
         Axios.post(url, formData).then((response) => {
             console.log("Success ", response)
             if (response.status === 200) {
                 setStateVal({
-                    pName: '',
-                    company: '',
-                    price: '',
-                    qty: '',
-                    proImg: '',
-                    description: '',
-                    medicineType: ''
+                    pName: "",
+                    company: "",
+                    price: "",
+                    qty: "",
+                    proImg: "",
+                    description: "",
+                    medicineType: null,
+                    formErrors: {
+                        pName: "",
+                        company: "",
+                        price: "",
+                        qty: "",
+                        proImg: "",
+                        description: "",
+                        medicineType: ""
+                        // ...setStateVal
+                    }
                 })
             }
         }).catch((err) => {
@@ -220,7 +248,7 @@ export default function AddProduct(props) {
     const handleChange = e => {
         const { name, value } = e.target;
         let formErrors = { ...stateval.formErrors };
-        console.log(value)
+        // console.log(value)
         switch (name) {
             case "pName": if (value !== "") {
                 formErrors.pName = "";
@@ -291,16 +319,16 @@ export default function AddProduct(props) {
                     formErrors.price = "";
                     // if (value.length < 10) {
                     //     formErrors.price = "";
-                        if (value.match(/^[0-9]/) || value.match(/^[0-9](\.[0-9]+)?$/)) {
-                            formErrors.price = "";
-                        }
-                        else {
-                            formErrors.price = "enter valid price"
-                        }
+                    if (value.match(/^[0-9]/) || value.match(/^[0-9](\.[0-9]+)?$/)) {
+                        formErrors.price = "";
                     }
                     else {
-                        formErrors.price = "please use numbers only";
+                        formErrors.price = "enter valid price"
                     }
+                }
+                else {
+                    formErrors.price = "please use numbers only";
+                }
                 // }
                 // else {
                 //     formErrors.price = "minimum 6 characaters required"
@@ -315,17 +343,17 @@ export default function AddProduct(props) {
                 formErrors.qty = "";
                 if (value.match(/^[0-9]/)) {
                     formErrors.qty = "";
-                    if (value.length <5 ) {
-                    formErrors.qty = "";
+                    if (value.length < 5) {
+                        formErrors.qty = "";
                         if (!value.match(usernameRegex)) {
-                    formErrors.qty = "";
+                            formErrors.qty = "";
                         }
-                        else{
-                    formErrors.qty = "use numbers";
+                        else {
+                            formErrors.qty = "use numbers";
                         }
                     }
-                    else{
-                    formErrors.qty = "maximum 4 numbers only";
+                    else {
+                        formErrors.qty = "maximum 4 numbers only";
                     }
                 }
                 else {
@@ -345,11 +373,11 @@ export default function AddProduct(props) {
                 break;
             case "proImg": if (value !== "") {
                 formErrors.proImg = "";
-                if (value.length<150) {
-                formErrors.proImg = "";
+                if (value.length < 150) {
+                    formErrors.proImg = "";
                 }
-                else{
-                formErrors.proImg = "maximumm number of character(150) is reached";
+                else {
+                    formErrors.proImg = "maximumm number of character(150) is reached";
                 }
             }
             else {
@@ -372,7 +400,7 @@ export default function AddProduct(props) {
         //     }
         // }
         // else {
-            setStateVal({ ...stateval, formErrors, [name]: value });
+        setStateVal({ ...stateval, formErrors, [name]: value });
 
         // }
     };
@@ -417,7 +445,6 @@ export default function AddProduct(props) {
                             <Grid container spacing={2}>
                                 <Grid item xs={12} >
                                     <TextField
-                                        autoComplete="fname"
                                         variant="outlined"
                                         required
                                         fullWidth
@@ -425,6 +452,7 @@ export default function AddProduct(props) {
                                         name="pName"
                                         onChange={handleChange}
                                         autoFocus
+                                        value={stateval.pName}
                                     />
                                     {stateval.formErrors.pName.length > 0 && (
                                         <span style={{ color: "red", fontSize: "20px" }}>{stateval.formErrors.pName}</span>
@@ -439,8 +467,9 @@ export default function AddProduct(props) {
                                         name="company"
                                         onChange={handleChange}
                                         autoComplete="company"
+                                        value={stateval.company}
                                     />
-                                     {stateval.formErrors.company.length > 0 && (
+                                    {stateval.formErrors.company.length > 0 && (
                                         <span style={{ color: "red", fontSize: "20px" }}>{stateval.formErrors.company}</span>
                                     )}
                                 </Grid>
@@ -452,9 +481,10 @@ export default function AddProduct(props) {
                                         label="Image Address"
                                         name="proImg"
                                         onChange={handleChange}
-                                        autoComplete="company"
+                                        autoComplete="image"
+                                        value={stateval.proImg}
                                     />
-                                     {stateval.formErrors.proImg.length > 0 && (
+                                    {stateval.formErrors.proImg.length > 0 && (
                                         <span style={{ color: "red", fontSize: "20px" }}>{stateval.formErrors.proImg}</span>
                                     )}
                                 </Grid>
@@ -467,6 +497,7 @@ export default function AddProduct(props) {
                                         name="price"
                                         onChange={handleChange}
                                         autoComplete="price"
+                                        value={stateval.price}
                                     />
                                     {stateval.formErrors.price.length > 0 && (
                                         <span style={{ color: "red", fontSize: "20px" }}>{stateval.formErrors.price}</span>
@@ -481,12 +512,13 @@ export default function AddProduct(props) {
                                         name="qty"
                                         onChange={handleChange}
                                         autoComplete="Quantity"
+                                        value={stateval.qty}
                                     />
                                     {stateval.formErrors.qty.length > 0 && (
                                         <span style={{ color: "red", fontSize: "20px" }}>{stateval.formErrors.qty}</span>
                                     )}
                                 </Grid>
-                                
+
                                 <Grid item xs={12}>
                                     <TextField
                                         variant="outlined"
@@ -496,6 +528,7 @@ export default function AddProduct(props) {
                                         name="description"
                                         onChange={handleChange}
                                         autoComplete="price"
+                                        value={stateval.description}
                                     />
                                     {stateval.formErrors.description.length > 0 && (
                                         <span style={{ color: "red", fontSize: "20px" }}>{stateval.formErrors.description}</span>

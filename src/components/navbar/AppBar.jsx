@@ -21,6 +21,7 @@ import UsersTables from '../users-table/UsersTables';
 import ProductTable from '../producttable/ProductTable';
 import UserContext, { UserConsumer } from '../../context/userContext';
 import { withRouter } from 'react-router-dom';
+import ProductList from '../producttable/ProductList';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -56,8 +57,8 @@ export default  function ButtonAppBar(props) {
     return (
         <Router>
             <div className={classes.root}>
-                <AppBar position="static"  color="primary" >
-                    <Toolbar  >
+                <AppBar position="static" >
+                    <Toolbar className="bg-primary">
                         <img src="logo.jpg" to="/" alt="" />
                         <Link style={{ color: "white", textDecoration: "none", fontSize: "15px" }} to='/'>Med 24x7 </Link> &nbsp;&nbsp;
                             <UserConsumer>
@@ -120,7 +121,7 @@ export default  function ButtonAppBar(props) {
                 <Route exact path='/bill' component={Billing} />
                 <Route exact path='/check' component={Checkout} />
                 <Route exact path='/users' component={UsersTables} />
-                <Route exact path='/prolist' component={ProductTable} />
+                <Route exact path='/prolist' component={ProductList} />
             </> : null
             }
 

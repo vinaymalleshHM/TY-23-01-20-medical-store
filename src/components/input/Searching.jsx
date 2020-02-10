@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     minHeight: "100%",
+    color:"primary",
     // alignItems: 'flex-start',
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
@@ -78,21 +79,26 @@ export default function PrimarySearchAppBar(props) {
   const classes = useStyles();
 
   return (
-    <div  className="mt-0.7">
-      <AppBar 
+    <div 
+    // style={{backgroundColor:"#3f51b5"}} 
+    >
+      {/* <AppBar 
       position="static"
-      color="primary"
+      // color="secondary"
+      style={{outline:'none'}}
+      // outline="none"
       
-      >
+      > */}
       
-        <Toolbar className={classes.toolbar}  >
+        {/* <Toolbar className={classes.toolbar}  > */}
+        <Toolbar className="bg-primary"  >
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <SearchIcon style={{color:"white"}} />
             </div>
             <InputBase
               placeholder="Search…"
-              style={{width:'100%'}}
+              style={{width:'100%',color:"white"}}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -102,7 +108,7 @@ export default function PrimarySearchAppBar(props) {
             />
           </div>
         </Toolbar>
-      </AppBar>
+      {/* </AppBar> */}
      </div>
   );
 }

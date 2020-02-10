@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Axios from 'axios'
 import Search from '../input/Search'
 import PrimarySearchAppBar from '../input/Searching'
+import   './homeStyle.css'
 
 export default function Home(props) {
   const [receiveItem, setItems] = useState({ all: [] })
@@ -129,7 +130,7 @@ export default function Home(props) {
       </div>
       {receiveItem.all.map((acc) => {
         return (
-          <div className='container-fluid mt-4'>
+          <div className='mycard container-fluid mt-4'>
             <div className='col-md-3 col-sm-6 col-12 mt-2 card float-left'>
               <div key={acc.id} className='card-body'>
                 <img className='card-img-top' width='100%' height='250px' src={acc.proImg} alt='No Image' ></img>
